@@ -38,7 +38,7 @@ void printAllNode(LinkedList** list)
 
 int main() 
 {
-	LinkedList* list = new(LinkedList);
+	LinkedList* list = NULL;
 	
 	appendNode(&list, 100);
 	appendNode(&list, 5);
