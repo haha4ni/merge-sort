@@ -1,124 +1,50 @@
 #include <iostream>
 using namespace std;
 
-struct Tree
+struct LinkedList
 {
 	int var;
-	Tree* left;
-	Tree* right;
+	LinkedList* next;
 };
 
-void appendNode(Tree** tree, int var)
+void appendNode(LinkedList** list, int var)
 {
-	Tree* node = new(Tree);
+	LinkedList* node = new(LinkedList);
 	node->var = var;
-	node->left = NULL;
-	node->right = NULL;
+	node->next = NULL;
 	
-	Tree** temp = tree;
+	LinkedList** temp = list;
 	while(*temp != NULL)
-	{
-		if(var < (*temp)->var)
-			temp = &((*temp)->left);
-		else
-			temp = &((*temp)->right);
-	}
-	
+		temp = &((*temp)->next);
 	*temp = node;
 }
 
-void deleteNode(Tree** tree, int var)
+void deleteNode(LinkedList** list, int var)
 {
-	Tree** temp = tree;
-	while(*temp != NULL)
+	LinkedList** temp = list;
+	while(*temp != NULL && (*temp)->var != var)
+		temp = &((*temp)->next);
+	*temp = (*temp)->next;
+}
+
+void printAllNode(LinkedList** list)
+{
+	while(*list != NULL)
 	{
-		if(var < (*temp)->var)
-			temp = &((*temp)->left);
-		else if(var > (*temp)->var)
-			temp = &((*temp)->right);
-		else
-		{
-			if((*temp)->left == NULL && (*temp)->right == NULL)
-			{
-				delete(*temp);
-				*temp = NULL;
-				return;
-			}
-			else if((*temp)->left == NULL)
-			{
-				Tree* deleteNode = *temp;
-				*temp = (*temp)->right;
-				delete(deleteNode);
-				return;
-			}
-			else if((*temp)->right == NULL)
-			{
-				Tree* deleteNode = *temp;
-				*temp = (*temp)->left;
-				delete(deleteNode);
-				return;
-			}
-			else
-			{
-				Tree** rightMin = &(*temp)->right;
-				while((*rightMin)->left != NULL)
-				{
-					rightMin = &((*rightMin)->left);
-				}
-				(*temp)->var = (*rightMin)->var;
-				delete(*rightMin);
-				*rightMin = NULL;
-				return;
-			}
-		}
+		cout << (*list)->var << ",";
+		*list = (*list)->next;
 	}
 }
 
-
-void preorder(Tree* tree)
+int main() 
 {
-	cout << tree->var << ",";
-	if(tree->left != NULL)
-		preorder(tree->left);
-	if(tree->right != NULL)
-		preorder(tree->right);
-}
-
-void inorder(Tree* tree)
-{
-	if(tree->left != NULL)
-		inorder(tree->left);
-	cout << tree->var << ",";
-	if(tree->right != NULL)
-		inorder(tree->right);
-}
-
-void postorder(Tree* tree)
-{
-	if(tree->left != NULL)
-		postorder(tree->left);
-	if(tree->right != NULL)
-		postorder(tree->right);
-	cout << tree->var << ",";
-}
-
-
-int main() {
-	// your code goes here
-	Tree* tree = NULL;
-	appendNode(&tree, 10);
-	appendNode(&tree, 5);
-	appendNode(&tree, 20);
-	appendNode(&tree, 3);
-	appendNode(&tree, 17);
+	LinkedList* list = new(LinkedList);
 	
-	deleteNode(&tree, 10);
-	
-	preorder(tree);
-	cout << endl;
-	inorder(tree);
-	cout << endl;
-	postorder(tree);
-	cout << endl;
+	appendNode(&list, 100);
+	appendNode(&list, 5);
+	appendNode(&list, 20);
+	deleteNode(&list, 5);
+	printAllNode(&list);
+
 	return 0;
 }
