@@ -8,7 +8,7 @@ struct Tree
 	Tree* right;
 };
 
-void append(Tree** tree, int var)
+void appendNode(Tree** tree, int var)
 {
 	Tree* node = new(Tree);
 	node->var = var;
@@ -106,11 +106,11 @@ void postorder(Tree* tree)
 int main() {
 	// your code goes here
 	Tree* tree = NULL;
-	append(&tree, 10);
-	append(&tree, 5);
-	append(&tree, 20);
-	append(&tree, 3);
-	append(&tree, 17);
+	appendNode(&tree, 10);
+	appendNode(&tree, 5);
+	appendNode(&tree, 20);
+	appendNode(&tree, 3);
+	appendNode(&tree, 17);
 	
 	deleteNode(&tree, 10);
 	
